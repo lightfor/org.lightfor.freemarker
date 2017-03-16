@@ -7,9 +7,11 @@ import freemarker.template.TemplateExceptionHandler;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,15 +43,19 @@ public class NewConfig {
         // Don't log exceptions inside FreeMarker that it will thrown at you anyway:
         cfg.setLogTemplateExceptions(false);
 
-        Map<String, String> root = new HashMap<>();
+        Map<String, Object> root = new HashMap<>();
         root.put("user", "Big Joe");
         root.put("url", "products/greenmouse.html");
         root.put("name", "green mouse");
+        root.put("date", new Date());
 
-        Template temp = cfg.getTemplate("test.ftlh");
+        Template sampleTemplate = cfg.getTemplate("sample.ftlh");
 
-        Writer out = new OutputStreamWriter(System.out);
-        temp.process(root, out);
+        //Writer out = new OutputStreamWriter(System.out);
+        //temp.process(root, out);
+
+        Writer out = new OutputStreamWriter(new FileOutputStream(new File( "sample.html")));
+        sampleTemplate.process(root, out);
 
     }
 }
